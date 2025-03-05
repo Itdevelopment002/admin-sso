@@ -1,0 +1,8 @@
+#users .nav-tabs .nav-link.active {
+    background: #f1f1f1 !important;
+    color: #333 !important;
+}
+
+#users .navlink{
+    color: #fff !important;
+}

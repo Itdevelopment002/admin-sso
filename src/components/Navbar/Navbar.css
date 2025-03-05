@@ -1,0 +1,19 @@
+#navbar input:focus {
+    border-color: none;
+    box-shadow: none;
+}
+
+#navbar input:placeholder {
+    border-color: none;
+    box-shadow: none;
+}
+
+#navbar .nav-bg-color{
+    background: linear-gradient(to right, #F57F42 0%, #F55570 100%) !important;
+}
+
+#navbar .colors-text {
+    color: white;
+    text-shadow: 4px 4px 8px rgb(245, 85, 112); /* Added proper shadow syntax */
+}
+
