@@ -1,69 +1,88 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaSearch, FaUser, FaEdit, FaSignOutAlt, FaEllipsisV } from "react-icons/fa";
+import { RiArrowDropDownLine } from "react-icons/ri";
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     window.location.reload();
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <nav className="navbar container-fluid nav-bg-color d-flex align-items-center justify-content-between py-2 border-bottom" id="navbar" style={{ background: `linear-gradient(to right, #F57F42 0%, #F55570 100%)`}}>
+    <nav className="navbar navbar-bg container-fluid nav-bg-color d-flex align-items-center justify-content-between py-3 border-bottom" id="navbar">
       <h3 className="fw-bold m-0 colors-text">ADMIN DASHBOARD</h3>
-      <div className="position-relative d-none d-md-block" style={{ flex: 1, maxWidth: "400px" }}>
-        <FaSearch className="position-absolute ms-2 mt-2 text-muted" />
-        <input
-          type="text"
-          className="form-control rounded-pill ps-4 form-search"
-          placeholder="Search or type command..."
-        />
+      <div className="position-relative d-none d-md-block search-container">
+        <FaSearch className="search-icon" />
+        <input type="text" className="form-control rounded-pill ps-5 form-search" placeholder="Search or type command..." />
       </div>
-      <div className="d-none d-md-flex align-items-center gap-2 position-relative">
-        <div className="d-flex align-items-center gap-2" style={{ cursor: "pointer" }} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+      <div className="d-none d-md-flex align-items-center gap-2 position-relative" ref={dropdownRef}>
+        <div className="user-profile" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
           <img
             src="https://img.freepik.com/premium-vector/profile-icon_933463-643.jpg"
             alt="User"
-            className="rounded-circle"
-            width="40"
-            height="40"
+            className="user-image"
           />
-          <span className="fw-bold text-white">John Doe</span>
+          <div className="d-flex flex-column">
+            <span className="fw-bold username">John Doe</span>
+            <span className="user-role">Admin</span>
+          </div>
+          <RiArrowDropDownLine className="dropdown-arrow" size={30} />
         </div>
+
         {isDropdownOpen && (
-          <div className="dropdown-menu show position-absolute top-100 end-0 mt-2 shadow rounded p-2" style={{ minWidth: "150px" }}>
-            <a href="#" className="dropdown-item d-flex align-items-center gap-2">
+          <div className="dropdown-menu show position-absolute top-100 mt-2 shadow rounded p-2 custom-dropdown">
+            <Link to="#" className="dropdown-item d-flex align-items-center gap-2 custom-text-color">
               <FaUser /> View Profile
-            </a>
-            <a href="#" className="dropdown-item d-flex align-items-center gap-2">
+            </Link>
+            <Link to="#" className="dropdown-item d-flex align-items-center gap-2 custom-text-color">
               <FaEdit /> Edit Profile
-            </a>
-            <a href="#" onClick={handleLogout} className="dropdown-item d-flex align-items-center gap-2 text-danger">
+            </Link>
+            <Link to="#" onClick={handleLogout} className="dropdown-item d-flex align-items-center gap-2 text-danger">
               <FaSignOutAlt /> Logout
-            </a>
+            </Link>
           </div>
         )}
       </div>
-      <div className="d-md-none position-relative">
+      <div className="d-md-none position-relative" ref={mobileMenuRef}>
         <button className="btn p-0" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          <FaEllipsisV size={20} />
+          <FaEllipsisV size={20} className="menu-icon" />
         </button>
 
         {isMobileMenuOpen && (
-          <div className="dropdown-menu show position-absolute end-0 top-100 mt-2 shadow rounded p-2" style={{ minWidth: "150px" }}>
-            <a href="#" className="dropdown-item d-flex align-items-center gap-2">
+          <div className="dropdown-menu show position-absolute end-0 top-100 mt-2 shadow rounded p-2 custom-dropdown">
+            <Link to="#" className="dropdown-item d-flex align-items-center gap-2 custom-text-color">
               <FaUser /> View Profile
-            </a>
-            <a href="#" className="dropdown-item d-flex align-items-center gap-2">
+            </Link>
+            <Link to="#" className="dropdown-item d-flex align-items-center gap-2 custom-text-color">
               <FaEdit /> Edit Profile
-            </a>
-            <a href="#" onClick={handleLogout} className="dropdown-item d-flex align-items-center gap-2 text-danger">
+            </Link>
+            <Link to="#" onClick={handleLogout} className="dropdown-item d-flex align-items-center gap-2 text-danger">
               <FaSignOutAlt /> Logout
-            </a>
+            </Link>
           </div>
         )}
       </div>

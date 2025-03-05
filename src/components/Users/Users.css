@@ -1,8 +1,60 @@
-#users .nav-tabs .nav-link.active {
+#users .nav-tabs .nav-link {
     background: #f1f1f1 !important;
     color: #333 !important;
+    font-weight: 500;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+#users .nav-tabs .nav-link.active {
+    
+    background: rgba(138, 43, 226, 0.1) !important;
+    color: #8A2BE2 !important;
+    font-weight: 500;
 }
 
 #users .navlink{
     color: #fff !important;
+}
+
+.thead-dark th{
+    font-size: 17px !important;
+    padding: 15px !important;
+}
+
+#users td {
+    padding: 5px 15px !important;
+    vertical-align: middle;
+    font-size: 15px;
+}
+
+.btn-purple {
+    background-color: #5cb85c; 
+    border-color: #5cb85c;    
+    color: #fff;            
+}
+
+.btn-purple:hover {
+    background-color: #2f952f; 
+    border-color: #2f952f;
+    color: #fff;
+}
+
+.btn-danger-custom {
+    background-color: #fc5e6d;
+    border-color: #fc5e6d;
+    color: #fff; 
+}
+
+.btn-danger-custom:hover {
+    background-color: #bb2d3b; 
+    border-color: #bb2d3b;
+    color: #fff;
+}
+
+@media (max-width: 576px){
+    .userbuttom-margin{
+        margin-bottom: 10px;
+        margin-top: -5px;
+    }
 }

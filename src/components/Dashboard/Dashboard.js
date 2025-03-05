@@ -3,12 +3,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Dashboard.css";
 import image1 from "../../assets/icons/crs-logo.png"
 import image2 from "../../assets/icons/wedding.png"
+import image3 from "../../assets/icons/umc.png"
+
 import { Link } from "react-router-dom";
 
 const cardData = [
     { title: "Birth & Death Registration", image: image1 },
     { title: "Marriage Registration Portal", image: image2 },
-    { title: "Sales", image: image2 },
+    { title: "UlhasNagar Municipal Corporation", image: image3 },
     { title: "Revenue", image: image2 },
     { title: "Subscribers", image: image2 },
     { title: "Deliveries", image: image2 },
@@ -29,12 +31,18 @@ const Dashboard = () => {
                     <span className="breadcrumb-item active1">Home</span>
                 </nav>
 
-                <div className="d-flex justify-content-end mb-4">
-                    <button className="btn button-color-add text-white fw-bold">
+                <div className="d-flex justify-content-end gap-3 mb-4 flex-wrap">
+                    <Link to="/users" className="btn btn-manage">
+                        <i className="fa fa-user-gear me-2"></i>
+                        Manage Users
+                    </Link>
+                    <Link to="/manage-website" className="btn btn-users">
                         <i className="fa fa-plus me-2"></i>
-                        Add New Website
-                    </button>
+                        Manage Website
+                    </Link>
                 </div>
+
+
 
                 <div className="row mt-5">
                     {cardData.map((card, index) => (
@@ -67,21 +75,6 @@ const Dashboard = () => {
                             </div>
                         </div>
                     ))}
-                </div>
-
-                <div className="d-flex justify-content-start gap-3">
-                    <Link
-                        to="/users"
-                        className="btn btn-manage">
-                        <i className="fa fa-user-gear me-2"></i>
-                        Manage Users
-                    </Link>
-                    <Link
-                        to="/add-users"
-                        className="btn btn-users text-decoration-none">
-                        <i className="fa fa-user-plus me-2"></i>
-                        Add Users
-                    </Link>
                 </div>
 
             </div>

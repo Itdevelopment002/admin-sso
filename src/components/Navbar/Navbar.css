@@ -1,19 +1,109 @@
+.navbar-bg {
+    background: linear-gradient(to right, #6b01b7 0%, #9c3ff3 100%);
+}
+
 #navbar input:focus {
-    border-color: none;
-    box-shadow: none;
+    border-color: transparent;
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
 }
 
-#navbar input:placeholder {
-    border-color: none;
-    box-shadow: none;
+#navbar input::placeholder {
+    color: rgba(255, 255, 255, 0.85);
 }
 
-#navbar .nav-bg-color{
-    background: linear-gradient(to right, #F57F42 0%, #F55570 100%) !important;
+#navbar .nav-bg-color {
+    background: linear-gradient(to right, #4B0082 0%, #8A2BE2 100%) !important;
 }
 
 #navbar .colors-text {
-    color: white;
-    text-shadow: 4px 4px 8px rgb(245, 85, 112); /* Added proper shadow syntax */
+    color: rgba(226, 226, 226, 0.9);
+    text-shadow: 3px 3px 10px rgba(75, 0, 130, 0.5), 
+                 2px 2px 12px rgba(0, 191, 255, 0.5), 
+                 0px 0px 15px rgba(255, 255, 255, 0.6); 
 }
 
+.search-container {
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-icon {
+    color: #E0E0E0;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.form-search {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding-left: 40px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.user-image {
+    border: 1px solid white !important;
+    box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.username {
+    color: white;
+    font-size: 16px;
+    margin-bottom: -3px;
+
+}
+
+.user-role {
+    font-size: 13px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.custom-dropdown {
+    min-width: 150px;
+}
+
+#navbar .dropdown-item {
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+#navbar .dropdown-item:hover {
+    background: rgba(138, 43, 226, 0.1);
+    color: #6b01b7;
+}
+
+#navbar .dropdown-item:active {
+    background: rgba(138, 43, 226, 0.1); 
+    color: white;
+}
+
+#navbar .dropdown-item:focus {
+    background: rgba(138, 43, 226, 0.1);
+    color: white;
+    outline: none;
+}
+
+
+.dropdown-arrow{
+    color: white;
+}
+.custom-text-color{
+    color: #8A2BE2 !important;
+}
+
+.menu-icon {
+    color: white;
+}

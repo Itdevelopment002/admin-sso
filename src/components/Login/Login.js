@@ -36,7 +36,6 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Show SweetAlert on success
       Swal.fire({
         title: "Login Successful",
         text: "Redirecting to the dashboard",
@@ -45,7 +44,6 @@ const Login = () => {
         showConfirmButton: false,
       });
 
-      // Set localStorage after 2 seconds
       setTimeout(() => {
         localStorage.setItem("isLoggedIn", "true");
         navigate("/dashboard");
@@ -55,7 +53,7 @@ const Login = () => {
 
   return (
     <div className="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light" id="login">
-      <div className="row w-50 shadow rounded bg-white p-4">
+      <div className="row shadow rounded bg-white p-4">
         <div className="form-container">
           <h3 className="text-primary fw-bold text-center">ADMIN DASHBOARD</h3>
           <p className="text-muted text-center fw-semibold">Welcome to Admin Dashboard</p>
@@ -67,38 +65,46 @@ const Login = () => {
               <label className="form-label fw-bold">Email</label>
               <input
                 type="email"
-                className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                className={`form-control ${errors.email ? "error-border" : ""}`}
                 placeholder="Enter your email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setErrors((prev) => ({ ...prev, email: "" }));
+                }}
               />
-              {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+              {errors.email && <div className="error-text">{errors.email}</div>}
             </div>
 
             {/* Password Field */}
             <div className="mb-3 position-relative">
               <label className="form-label fw-bold">Password</label>
-              <input
-                type={showPassword ? "text" : "password"}
-                className={`form-control ${errors.password ? "is-invalid" : ""}`}
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <i
-                className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"} password-toggle-icon`}
-                onClick={togglePasswordVisibility}
-              ></i>
-              {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+              <div className="position-relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className={`form-control password-input ${errors.password ? "error-border" : ""}`}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setErrors((prev) => ({ ...prev, password: "" }));
+                  }}
+                />
+                <i
+                  className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"} password-toggle-icon`}
+                  onClick={togglePasswordVisibility}
+                ></i>
+              </div>
+              {errors.password && <div className="error-text">{errors.password}</div>}
             </div>
 
             {/* Remember Me & Forgot Password */}
-            <div className="d-flex justify-content-between align-items-center mb-3">
+            <div className="d-flex justify-content-between align-items-center mb-3 mt-4">
               <div>
                 <input type="checkbox" id="rememberMe" className="form-check-input me-2" />
                 <label htmlFor="rememberMe" className="form-check-label">Remember Me</label>
               </div>
-              <a href="#." className="text-primary text-decoration-none">Forgot Password?</a>
+              <a href="#." className="forget-password text-primary text-decoration-none">Forgot Password?</a>
             </div>
 
             {/* Submit Button */}

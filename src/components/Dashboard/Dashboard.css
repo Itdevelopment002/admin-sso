@@ -1,7 +1,7 @@
 #dashboard .color-bg {
     background: #ffffff;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    box-shadow: 1px 6px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 6px 8px rgba(138, 43, 226, 0.2);
     padding: 15px;
     border-bottom-right-radius: 20px !important;
     height: 100%;
@@ -18,33 +18,38 @@
 
 @keyframes glowEffect {
     0% {
-        box-shadow: 0 8px 20px rgba(186, 53, 139, 0.3);
+        box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3);
     }
+
     100% {
-        box-shadow: 0 8px 35px rgba(250, 176, 47, 0.8);
+        box-shadow: 0 8px 35px rgba(138, 43, 226, 0.3);
     }
 }
+
 
 .bg-color-page {
     background-color: rgb(250, 248, 248);
 }
 
-#dashboard .button-color-add {
-    background: linear-gradient(to right, #F57F42 0%, #F55570 100%);
-    border-radius: 25px !important;
-}
-
-#dashboard .btn-manage {
-    background: linear-gradient(to right, #F57F42 0%, #F55570 100%);
+.button-color-add {
+    background: linear-gradient(to right, #8433c9 0%, #b26af5 100%) !important;
     border-radius: 25px !important;
     color: white !important;
 }
 
-#dashboard .btn-users {
-    background: linear-gradient(to right, #F57F42 0%, #F55570 100%);
+.btn-manage {
+    background: linear-gradient(to right, #8433c9 0%, #b26af5 100%) !important;
     border-radius: 25px !important;
     color: white !important;
 }
+
+.btn-users {
+    background: linear-gradient(to right, #8433c9 0%, #b26af5 100%) !important;
+    border-radius: 25px !important;
+    color: white !important;
+}
+
+
 
 #dashboard .bg1-light {
     background-color: #f1f1f1;
@@ -52,22 +57,19 @@
 
 #dashboard a {
     color: #6c757d !important;
-    transition: color 0.3s ease-in-out; 
+    transition: color 0.3s ease-in-out;
 }
 
-/* #dashboard a:hover {
-    color: rgb(76, 76, 249) !important;
-} */
 
 #dashboard .i-move {
-    transition: transform 0.3s ease-in-out; 
+    transition: transform 0.3s ease-in-out;
 }
 
 #dashboard a:hover .i-move {
     transform: translateX(5px);
 }
 
-table th{
+table th {
     background-color: #EDEDED !important;
     color: #000000 !important;
     font-size: 15px !important;
@@ -76,19 +78,34 @@ table th{
 }
 
 .breadcrumb {
-    background-color: #FBE9ED !important;
+    background-color: rgba(138, 43, 226, 0.1) !important;
     padding: 13px 10px !important;
     border-radius: 5px !important;
-    border: 1px solid #FBE9ED !important;
+    border: 1px solid rgba(0, 191, 255, 0.2) !important;
 }
 
 .breadcrumb-item {
-    color: #5b5b5b !important;
+    color: rgba(91, 91, 91, 0.9) !important;
     font-size: 16px !important;
     font-weight: 500 !important;
     line-height: 16.41px !important;
 }
 
 .active1 {
-    color: #E3435A !important;
+    color: #8A2BE2 !important;
+    font-weight: 600 !important;
+}
+
+@media (max-width: 370px){
+
+    #dashboard .btn-manage {
+        font-size: 13px;
+        padding: 7px 10px !important;
+    }
+    
+    #dashboard .btn-users {
+       font-size: 13px;
+       padding: 7px 10px !important;
+    }
+
 }
