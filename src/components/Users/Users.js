@@ -7,19 +7,32 @@ const Users = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [editedUser, setEditedUser] = useState({ name: "", website: "", role: "" });
+    const [editedUser, setEditedUser] = useState({ username: "", websiteName: "", role: "", status: "Active" });
 
     const users = [
-        { id: 1, name: "John Doe", role: "superadmin", website: "Orders" },
-        { id: 2, name: "Jane Smith", role: "Admin", website: "Services" },
-        { id: 3, name: "Mike Johnson", role: "User", website: "Orders" },
-        { id: 4, name: "Emily Davis", role: "Admin", website: "Services" },
-        { id: 5, name: "Robert Brown", role: "superadmin", website: "Orders" },
-        { id: 6, name: "Alice Green", role: "User", website: "Services" },
-        { id: 7, name: "Charlie White", role: "Admin", website: "Orders" },
-        { id: 8, name: "Sophia Blue", role: "superadmin", website: "Services" },
-        { id: 9, name: "Daniel Black", role: "User", website: "Orders" },
-        { id: 10, name: "Olivia Red", role: "Admin", website: "Services" }
+        { id: 1, username: "Rahul Sharma", role: "superadmin", websiteName: "Birth & Death", status: "Active" },
+        { id: 2, username: "Priya Patel", role: "Admin", websiteName: "Online Marriage Application", status: "Active" },
+        { id: 3, username: "Amit Singh", role: "User", websiteName: "Online Pandal(Mandap) Permission", status: "Deactive" },
+        { id: 4, username: "Neha Gupta", role: "Admin", websiteName: "e-Tender", status: "Active" },
+        { id: 5, username: "Vikram Yadav", role: "superadmin", websiteName: "Fire NOC", status: "Active" },
+        { id: 6, username: "Anjali Desai", role: "User", websiteName: "Library Management System", status: "Deactive" },
+        { id: 7, username: "Rajesh Kumar", role: "Admin", websiteName: "Service Book", status: "Deactive" },
+        { id: 8, username: "Sneha Reddy", role: "superadmin", websiteName: "Aaple Sarkar/PG Portal", status: "Active" },
+        { id: 9, username: "Arun Mishra", role: "User", websiteName: "Property Tax", status: "Active" },
+        { id: 10, username: "Pooja Choudhary", role: "Admin", websiteName: "BPMS", status: "Deactive" },
+        { id: 11, username: "Karan Mehta", role: "superadmin", websiteName: "E-office", status: "Active" },
+        { id: 12, username: "Divya Joshi", role: "User", websiteName: "AttDuty", status: "Deactive" },
+        { id: 13, username: "Ravi Verma", role: "Admin", websiteName: "Biometric Attendance System", status: "Active" },
+        { id: 14, username: "Shreya Malhotra", role: "superadmin", websiteName: "Water Billing", status: "Active" },
+        { id: 15, username: "Sanjay Tiwari", role: "User", websiteName: "Legal Application", status: "Deactive" },
+        { id: 16, username: "Kavita Bhatia", role: "Admin", websiteName: "UMC Website", status: "Active" },
+        { id: 17, username: "Manoj Saxena", role: "superadmin", websiteName: "Divyang Kalyankari Yojna", status: "Active" },
+        { id: 18, username: "Anita Rao", role: "User", websiteName: "Town Planning – Permission", status: "Deactive" },
+        { id: 19, username: "Vivek Pandey", role: "Admin", websiteName: "Tree Census", status: "Active" },
+        { id: 20, username: "Swati Dubey", role: "superadmin", websiteName: "Property Tax Survey New", status: "Active" },
+        { id: 21, username: "Rohit Nair", role: "User", websiteName: "Nagrik Suvidha", status: "Deactive" },
+        { id: 22, username: "Preeti Iyer", role: "Admin", websiteName: "Election", status: "Active" },
+        { id: 23, username: "Deepak Menon", role: "superadmin", websiteName: "BCR", status: "Active" }
     ];
 
     const filteredUsers =
@@ -52,14 +65,12 @@ const Users = () => {
                     </h2>
                 </div>
                 <div className="col-12 col-md-6 col-sm-5 text-end mt-md-0 userbuttom-margin">
-                    <Link to="/manage-website" className="btn btn-users">
+                    <Link to="/add-users" className="btn btn-users">
                         <i className="fa fa-plus me-2"></i>
                         Add Users
                     </Link>
                 </div>
-
             </div>
-
 
             <ul className="nav nav-tabs">
                 {["all", "superadmin", "admin", "user"].map((tab) => (
@@ -78,18 +89,33 @@ const Users = () => {
                 <table className="table table-bordered table-hover">
                     <thead className="thead-dark">
                         <tr>
-                            <th>Name</th>
-                            <th>Website</th>
+                            <th width='6%'>Sr. No.</th>
+                            <th>Username</th>
+                            <th>Website Name</th>
                             <th className="text-center">Role</th>
+                            <th className="text-center">Status</th>
                             <th width='10%' className="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredUsers.map((user) => (
+                        {filteredUsers.map((user, index) => (
                             <tr key={user.id}>
-                                <td>{user.name}</td>
-                                <td>{user.website}</td>
+                                <td className="text-center">{index + 1}</td>
+                                <td>{user.username}</td>
+                                <td>{user.websiteName}</td>
                                 <td className="text-center">{user.role === "superadmin" ? "SuperAdmin" : user.role}</td>
+                                <td className="text-center">
+                                    <span
+                                        className={`px-3 py-1 rounded-pill fw-semibold ${user.status === "Active"
+                                                ? "bg-success bg-opacity-25 text-success"
+                                                : "bg-danger bg-opacity-25 text-danger"
+                                            }`}
+                                            style={{fontSize:'14px'}}
+                                    >
+                                        {user.status}
+                                    </span>
+                                </td>
+
                                 <td className="text-center">
                                     <button
                                         className="btn btn-sm btn-purple mx-1 mt-1"
@@ -119,17 +145,23 @@ const Users = () => {
                                 <button className="close" onClick={() => setShowEditModal(false)}>&times;</button>
                             </div>
                             <div className="modal-body">
-                                <label>Name:</label>
-                                <input type="text" className="form-control" name="name" value={editedUser.name} onChange={handleInputChange} />
+                                <label>UserName:</label>
+                                <input type="text" className="form-control" name="username" value={editedUser.username} onChange={handleInputChange} />
 
-                                <label>Website:</label>
-                                <input type="text" className="form-control" name="website" value={editedUser.website} onChange={handleInputChange} />
+                                <label>Website Name:</label>
+                                <input type="text" className="form-control" name="websiteName" value={editedUser.websiteName} onChange={handleInputChange} />
 
                                 <label>Role:</label>
                                 <select className="form-control" name="role" value={editedUser.role} onChange={handleInputChange}>
                                     <option value="superadmin">SuperAdmin</option>
                                     <option value="Admin">Admin</option>
                                     <option value="User">User</option>
+                                </select>
+
+                                <label>Status:</label>
+                                <select className="form-control" name="status" value={editedUser.status} onChange={handleInputChange}>
+                                    <option value="Active">Active</option>
+                                    <option value="Deactive">Deactive</option>
                                 </select>
                             </div>
                             <div className="modal-footer">

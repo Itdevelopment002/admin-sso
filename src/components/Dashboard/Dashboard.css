@@ -31,6 +31,11 @@
     background-color: rgb(250, 248, 248);
 }
 
+#dashboard .website-link {
+    color: #6c757d !important;
+    transition: color 0.3s ease-in-out;
+}
+
 .button-color-add {
     background: linear-gradient(to right, #8433c9 0%, #b26af5 100%) !important;
     border-radius: 25px !important;
@@ -50,14 +55,8 @@
 }
 
 
-
 #dashboard .bg1-light {
     background-color: #f1f1f1;
-}
-
-#dashboard a {
-    color: #6c757d !important;
-    transition: color 0.3s ease-in-out;
 }
 
 
@@ -94,6 +93,19 @@ table th {
 .active1 {
     color: #8A2BE2 !important;
     font-weight: 600 !important;
+}
+
+@media (max-width: 500px){
+
+    .breadcrumb-item {
+        margin-bottom: 6px;
+    }
+    .breadcrumb-item {
+        display: flex;
+        align-items: center;
+        line-height: 1; /* Ensures text aligns well */
+    }
+    
 }
 
 @media (max-width: 370px){
