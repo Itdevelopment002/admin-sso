@@ -34,7 +34,9 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-bg container-fluid nav-bg-color d-flex align-items-center justify-content-between py-3 border-bottom" id="navbar">
-      <h3 className="fw-bold m-0 colors-text">ADMIN DASHBOARD</h3>
+      <Link to="/dashboard" className="text-decoration-none">
+        <h3 className="fw-bold m-0 colors-text">ADMIN DASHBOARD</h3>
+      </Link>
       <div className="position-relative d-none d-md-block search-container">
         <FaSearch className="search-icon" />
         <input type="text" className="form-control rounded-pill ps-5 form-search" placeholder="Search or type command..." />
@@ -47,7 +49,7 @@ const Navbar = () => {
             className="user-image"
           />
           <div className="d-flex flex-column">
-            <span className="fw-bold username">John Doe</span>
+            <span className="fw-bold username">Akhilesh</span>
             <span className="user-role">Admin</span>
           </div>
           <RiArrowDropDownLine className="dropdown-arrow" size={30} />

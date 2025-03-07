@@ -1,0 +1,69 @@
+
+
+#add-users-form input:focus,
+#add-users-form select:focus {
+    outline: none !important;
+    border-color: #8A2BE2 !important;
+    box-shadow: 0 0 5px rgba(138, 43, 226, 0.5) !important;
+}
+
+#add-users-form .form-check-input:checked {
+    background-color: #8A2BE2 !important;
+    border-color: #8A2BE2 !important;
+}
+
+#add-users-form .form-card .form-check-input {
+    margin-top: 0.3em;
+}
+
+#add-users-form .form-card .form-check-label {
+    margin-left: 0.5em;
+}
+
+#add-users-form .custom-dropdown .dropdown-toggle {
+    background: #fff;
+    border: 1px solid #ccc;
+}
+
+#add-users-form .custom-dropdown .dropdown-menu {
+    max-height: 140px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    white-space: normal; 
+}
+
+
+#add-users-form .custom-dropdown-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 15px;
+}
+#add-users-form .checkbox-border{
+    border:  1px solid rgba(138, 43, 226, 0.3);
+}
+
+#add-users-form .custom-dropdown-item:hover {
+    background: #fff; 
+    color: #8A2BE2;
+}
+
+#add-users-form .checkbox-border:hover {
+    color: #fff; 
+    border:  1px solid #8A2BE2 !important;
+
+}
+#add-users-form .custom-hover:hover{
+    background: #8A2BE2; 
+    color: #ffffff;
+}
+
+#add-users-form .custom-dropdown-item input {
+    cursor: pointer;
+}
+
+#add-users-form .text-wrap {
+    word-break: break-word;
+    flex-grow: 1;
+}
+

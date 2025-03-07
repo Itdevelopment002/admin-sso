@@ -4,6 +4,9 @@ import Navbar from "./components/Navbar/Navbar";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Login from "./components/Login/Login";
 import Users from "./components/Users/Users";
+import AddUsers from "./components/Users/AddUsers";
+import AddWebsite from "./components/Website/AddWebsite";
+import ManageWebsite from "./components/Website/ManageWebsite.js";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,6 +30,9 @@ const App = () => {
           <>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/add-users" element={<AddUsers />} />
+            <Route path="/add-website" element={<AddWebsite />} />
+            <Route path="/manage-website" element={<ManageWebsite />} />
           </>
         )}
       </Routes>
