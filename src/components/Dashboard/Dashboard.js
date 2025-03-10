@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Dashboard.css";
 import { Link } from "react-router-dom";
@@ -28,7 +28,7 @@ import image22 from "../../assets/icons/election.png";
 import image23 from "../../assets/icons/control.png";
 
 const cardData = [
-    { title: "Birth & Death Registration", image: image1, link: "https://dc.crsorgi.gov.in" },
+    { title: "Birth & Death Registration", image: image1, link: "/index2.html" },
     { title: "Online Marriage Application", image: image2, link: "https://marriage.rtsumc.com" },
     { title: "Online Pandal Permission", image: image3, link: "https://smartumc.com" },
     { title: "e-Tender", image: image4, link: "https://mahatenders.gov.in" },
@@ -54,22 +54,44 @@ const cardData = [
 ];
 
 const Dashboard = () => {
+    const [userRole, setUserRole] = useState(null);
+
+    useEffect(() => {
+        // Get user role from localStorage
+        const role = localStorage.getItem("userRole");
+        setUserRole(role);
+    }, []);
+
     return (
         <div className="bg-color-page">
             <div className="container-fluid py-4" id="dashboard">
                 <nav className="breadcrumb mb-4">
                     <span className="breadcrumb-item active1">Home</span>
                 </nav>
+
+                {/* Show buttons based on role */}
                 <div className="d-flex justify-content-end gap-3 mb-4 flex-wrap">
-                    <Link to="/users" className="btn btn-manage">
-                        <i className="fa fa-user-gear me-2"></i>
-                        Manage Users
-                    </Link>
-                    <Link to="/manage-website" className="btn btn-users">
-                        <i className="fa fa-plus me-2"></i>
-                        Manage Website
-                    </Link>
+                    {userRole === "SuperAdmin" && (
+                        <>
+                            <Link to="/users" className="btn btn-manage">
+                                <i className="fa fa-user-gear me-2"></i>
+                                Manage Users
+                            </Link>
+                            <Link to="/manage-website" className="btn btn-users">
+                                <i className="fa fa-plus me-2"></i>
+                                Manage Website
+                            </Link>
+                        </>
+                    )}
+                    {userRole === "Admin" && (
+                        <Link to="/users" className="btn btn-manage">
+                            <i className="fa fa-user-gear me-2"></i>
+                            Manage Users
+                        </Link>
+                    )}
                 </div>
+
+                {/* Dashboard Cards */}
                 <div className="row mt-5">
                     {cardData.map((card, index) => (
                         <div key={index} className="col-md-3 mb-5">
