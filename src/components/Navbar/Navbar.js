@@ -8,11 +8,31 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [username, setUsername] = useState("Guest");
+  const [role, setRole] = useState("User");
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
+  useEffect(() => {
+    const storedRole = localStorage.getItem("userRole");
+
+    if (storedRole) {
+      fetch("/data.json")
+        .then((response) => response.json())
+        .then((data) => {
+          const loggedInUser = data.find((user) => user.role === storedRole);
+          if (loggedInUser) {
+            setUsername(loggedInUser.username);
+            setRole(loggedInUser.role);
+          }
+        })
+        .catch((error) => console.error("Error fetching user data:", error));
+    }
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
     window.location.reload();
   };
 
@@ -49,8 +69,8 @@ const Navbar = () => {
             className="user-image"
           />
           <div className="d-flex flex-column">
-            <span className="fw-bold username">Akhilesh</span>
-            <span className="user-role">Admin</span>
+            <span className="fw-bold username">{username}</span>
+            <span className="user-role">{role}</span>
           </div>
           <RiArrowDropDownLine className="dropdown-arrow" size={30} />
         </div>

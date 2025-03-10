@@ -34,7 +34,7 @@ const ManageWebsite = () => {
     const [editedUser, setEditedUser] = useState({ websiteName: "", websiteUrl: "", websiteLogo: "", status: "Active" });
 
     const users = [
-        { id: 1, websiteName: "Birth & Death Registration", websiteUrl: "https://dc.crsorgi.gov.in", websiteLogo: image1, status: "Active" },
+        { id: 1, websiteName: "Birth & Death Registration", websiteUrl: "/public/index2.html", websiteLogo: image1, status: "Active" },
         { id: 2, websiteName: "Online Marriage Application", websiteUrl: "https://marriage.rtsumc.com", websiteLogo: image2, status: "Active" },
         { id: 3, websiteName: "Online Pandal Permission", websiteUrl: "https://smartumc.com", websiteLogo: image3, status: "Active" },
         { id: 4, websiteName: "e-Tender", websiteUrl: "https://mahatenders.gov.in", websiteLogo: image4, status: "Active" },

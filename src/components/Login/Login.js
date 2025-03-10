@@ -33,21 +33,54 @@ const Login = () => {
   };
 
   // Handle Form Submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      Swal.fire({
-        title: "Login Successful",
-        text: "Redirecting to the dashboard",
-        icon: "success",
-        timer: 2000,
-        showConfirmButton: false,
-      });
 
-      setTimeout(() => {
-        localStorage.setItem("isLoggedIn", "true");
-        navigate("/dashboard");
-      }, 2000);
+    if (validateForm()) {
+      try {
+        const response = await fetch("/data.json"); // Fetch JSON from public folder
+        const users = await response.json();
+
+        // Find user with matching email & password
+        const user = users.find((u) => u.email === email && u.password === password);
+
+        if (user) {
+          Swal.fire({
+            title: "Login Successful",
+            text: `Welcome ${user.role}`,
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+
+          // Store login info in localStorage
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("userRole", user.role);
+
+          setTimeout(() => {
+            if (user.role === "SuperAdmin") {
+              navigate("/superadmin-dashboard");
+            } else if (user.role === "Admin") {
+              navigate("/admin-dashboard");
+            } else {
+              navigate("/user-dashboard");
+            }
+          }, 2000);
+        } else {
+          Swal.fire({
+            title: "Login Failed",
+            text: "Invalid email or password",
+            icon: "error",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        Swal.fire({
+          title: "Error",
+          text: "Failed to load user data",
+          icon: "error",
+        });
+      }
     }
   };
 
