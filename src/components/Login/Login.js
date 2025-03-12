@@ -39,15 +39,15 @@ const Login = () => {
     if (validateForm()) {
       try {
         const response = await fetch("/data.json"); // Fetch JSON from public folder
-        const users = await response.json();
+        const data = await response.json();
 
         // Find user with matching email & password
-        const user = users.find((u) => u.email === email && u.password === password);
+        const user = data.users.find((u) => u.email === email && u.password === password);
 
         if (user) {
           Swal.fire({
             title: "Login Successful",
-            text: `Welcome ${user.role}`,
+            text: `Welcome ${user.username} (${user.role})`,
             icon: "success",
             timer: 2000,
             showConfirmButton: false,
@@ -56,6 +56,7 @@ const Login = () => {
           // Store login info in localStorage
           localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("userRole", user.role);
+          localStorage.setItem("username", user.username);
 
           setTimeout(() => {
             if (user.role === "SuperAdmin") {

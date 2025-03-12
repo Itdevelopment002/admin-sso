@@ -1,5 +1,6 @@
-import { useState} from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./AddWebsite.css";
 
 const AddWebsite = () => {
@@ -10,14 +11,31 @@ const AddWebsite = () => {
         status: "active",
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Data Submitted:", formData);
+
+        const newWebsite = {
+            id: Date.now(),
+            websiteName: formData.websiteName,
+            websiteLogo: formData.websiteLogo.name, 
+            websiteURL: formData.websiteURL,
+            status: formData.status,
+        };
+
+        try {
+            const response = await axios.post("http://localhost:5000/websites", newWebsite);
+            console.log("Data Added Successfully:", response.data);
+            alert("Website added successfully!");
+            setFormData({ websiteName: "", websiteLogo: "", websiteURL: "", status: "active" });
+        } catch (error) {
+            console.error("Error adding website:", error);
+            alert("Failed to add website!");
+        }
     };
 
     return (
         <div className="container-fluid mt-5 color-bg" id="manage-website">
-             <nav className="breadcrumb">
+            <nav className="breadcrumb">
                 <Link to="/dashboard" className="breadcrumb-item text-decoration-none">Home</Link>
                 <Link to="/manage-website" className="breadcrumb-item text-decoration-none">Website Management</Link>
                 <span className="breadcrumb-item active1">Add Website</span>
