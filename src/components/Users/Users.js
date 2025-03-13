@@ -134,14 +134,11 @@ const Users = () => {
                                 <td>{user.website}</td>
                                 <td className="text-center">{user.role === "superadmin" ? "SuperAdmin" : user.role}</td>
                                 <td className="text-center">
-                                    <span
-                                        className={`px-3 py-1 rounded-pill fw-semibold ${user.status === "Active"
-                                                ? "bg-success bg-opacity-25 text-success"
-                                                : "bg-danger bg-opacity-25 text-danger"
-                                            }`}
-                                        style={{ fontSize: '14px' }}
-                                    >
-                                        {user.status}
+                                    <span className={`px-3 py-1 rounded-pill fw-semibold ${user.status === "active"
+                                        ? "bg-success bg-opacity-25 text-success"
+                                        : "bg-danger bg-opacity-25 text-danger"
+                                        }`} style={{ fontSize: '14px' }}>
+                                        {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
                                     </span>
                                 </td>
 
@@ -179,7 +176,7 @@ const Users = () => {
                                 <input type="text" className="form-control" name="username" value={editedUser.username} onChange={handleInputChange} />
 
                                 <label>Website Name:</label>
-                                <input type="text" className="form-control" name="websiteName" value={editedUser.websiteName} onChange={handleInputChange} />
+                                <input type="text" className="form-control" name="websiteName" value={editedUser.website} onChange={handleInputChange} />
 
                                 <label>Role:</label>
                                 <select className="form-control" name="role" value={editedUser.role} onChange={handleInputChange}>
