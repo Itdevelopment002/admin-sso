@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "425b",
-      "username": "akhilesh",
+      "username": "Akhilesh",
       "email": "akhil@gmail.com",
       "password": "akhil123",
       "website": [
@@ -14,7 +14,7 @@
     },
     {
       "id": "b62a",
-      "username": "manoj    kumar",
+      "username": "Manoj",
       "email": "manoj@gmail.com",
       "password": "manoj123",
       "website": [
@@ -32,7 +32,7 @@
       "website": [
         "UlhasNagar Municipal Corporation"
       ],
-      "status": "active",
+      "status": "Deactive",
       "role": "Admin",
       "mobileNo": "1234567890"
     }
