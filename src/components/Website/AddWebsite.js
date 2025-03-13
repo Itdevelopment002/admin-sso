@@ -13,15 +13,15 @@ const AddWebsite = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const newWebsite = {
-            id: Date.now(),
+            id: String(Date.now()), // Convert ID to string
             websiteName: formData.websiteName,
             websiteLogo: formData.websiteLogo.name, 
             websiteURL: formData.websiteURL,
             status: formData.status,
         };
-
+    
         try {
             const response = await axios.post("http://localhost:5000/websites", newWebsite);
             console.log("Data Added Successfully:", response.data);
@@ -32,6 +32,7 @@ const AddWebsite = () => {
             alert("Failed to add website!");
         }
     };
+    
 
     return (
         <div className="container-fluid mt-5 color-bg" id="manage-website">

@@ -1,58 +1,66 @@
 {
   "users": [
     {
-      "id": 1,
-      "email": "superadmin@gmail.com",
-      "password": "superadmin123",
-      "username": "Akhilesh",
-      "role": "SuperAdmin"
+      "id": "425b",
+      "username": "akhilesh",
+      "email": "akhil@gmail.com",
+      "password": "akhil123",
+      "website": [
+        "Aaple Sarkar"
+      ],
+      "status": "active",
+      "role": "SuperAdmin",
+      "mobileNo": "1234567890"
     },
     {
-      "id": 2,
-      "email": "admin@gmail.com",
-      "password": "admin123",
+      "id": "b62a",
+      "username": "manoj    kumar",
+      "email": "manoj@gmail.com",
+      "password": "manoj123",
+      "website": [
+        "Birth & Death Registration"
+      ],
+      "status": "active",
+      "role": "User",
+      "mobileNo": "1212345672"
+    },
+    {
+      "id": "588d",
       "username": "Abhay",
-      "role": "Admin"
-    },
-    {
-      "id": 3,
-      "email": "user@gmail.com",
-      "password": "user1234",
-      "username": "Aniket",
-      "role": "User"
+      "email": "abhay@gmail.com",
+      "password": "Abhay123",
+      "website": [
+        "UlhasNagar Municipal Corporation"
+      ],
+      "status": "active",
+      "role": "Admin",
+      "mobileNo": "1234567890"
     }
   ],
   "websites": [
     {
-      "id": 1741690796258,
-      "websiteName": "Hrms",
-      "websiteLogo": "tree.png",
-      "websiteURL": "https://umc.genicminds.com/tenders-and-quotations",
-      "status": "active"
-    },
-    {
-      "id": 1741692057349,
+      "id": "1741692057349",
       "websiteName": "Furry",
       "websiteLogo": "biometric-authentication.png",
       "websiteURL": "https://umc.genicminds.com/tenders-and-quotations",
       "status": "active"
     },
     {
-      "id": 1741692481855,
+      "id": "1741692481855",
       "websiteName": "dcjhfd",
       "websiteLogo": "digital-india.png",
       "websiteURL": "https://umc.genicminds.com/tenders-and-quotations",
       "status": "active"
     },
     {
-      "id": 1741694372705,
+      "id": "1741694372705",
       "websiteName": "hello Website",
       "websiteLogo": "welfare.png",
       "websiteURL": "https://umc.genicminds.com/tenders-and-quotations",
       "status": "deactive"
     },
     {
-      "id": 1741695288648,
+      "id": "1741695288648",
       "websiteName": "dummy",
       "websiteLogo": "tree.png",
       "websiteURL": "https://umc.genicminds.com/tenders-and-quotations",

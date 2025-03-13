@@ -1,8 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./AddUsers.css";
 
+const API_URL = "http://localhost:5000/users"; // JSON Server endpoint
+
 const AddUsers = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -22,16 +26,15 @@ const AddUsers = () => {
         { value: "Aaple Sarkar", label: "Aaple Sarkar" },
         { value: "UlhasNagar Municipal Corporation", label: "UlhasNagar Municipal Corporation" },
         { value: "Kulgoan Badlapur Municipal Council", label: "Kulgoan Badlapur Municipal Council" },
-
     ];
 
     const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
     const roleDropdownRef = useRef(null);
 
     const roles = [
-        { value: "superadmin", label: "SuperAdmin" },
-        { value: "admin", label: "Admin" },
-        { value: "user", label: "User" },
+        { value: "SuperAdmin", label: "SuperAdmin" },
+        { value: "Admin", label: "Admin" },
+        { value: "User", label: "User" },
     ];
 
     // Handle role selection
@@ -61,16 +64,27 @@ const AddUsers = () => {
                 setRoleDropdownOpen(false);
             }
         };
-    
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);    
+    }, []);
 
-    const handleSubmit = (e) => {
+    // Handle form submission (Add User)
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Data Submitted:", formData);
+
+        try {
+            // Send a POST request to add a new user
+            const response = await axios.post(API_URL, formData);
+            console.log("User added successfully:", response.data);
+
+            // Redirect to the user list page after successful submission
+            navigate("/users");
+        } catch (error) {
+            console.error("Error adding user:", error.response?.data || error.message);
+        }
     };
 
     return (
