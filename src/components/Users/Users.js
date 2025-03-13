@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import './Users.css';
+import axios from "axios";
+import "./Users.css";
+
+const API_URL = "http://localhost:5000/users"; // JSON Server endpoint
 
 const Users = () => {
     const [activeTab, setActiveTab] = useState("all");
@@ -8,45 +11,69 @@ const Users = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [editedUser, setEditedUser] = useState({ username: "", websiteName: "", role: "", status: "Active" });
+    const [users, setUsers] = useState([]);
 
-    const users = [
-        { id: 1, username: "Rahul Sharma", role: "superadmin", websiteName: "Birth & Death", status: "Active" },
-        { id: 2, username: "Priya Patel", role: "Admin", websiteName: "Online Marriage Application", status: "Active" },
-        { id: 3, username: "Amit Singh", role: "User", websiteName: "Online Pandal(Mandap) Permission", status: "Deactive" },
-        { id: 4, username: "Neha Gupta", role: "Admin", websiteName: "e-Tender", status: "Active" },
-        { id: 5, username: "Vikram Yadav", role: "superadmin", websiteName: "Fire NOC", status: "Active" },
-        { id: 6, username: "Anjali Desai", role: "User", websiteName: "Library Management System", status: "Deactive" },
-        { id: 7, username: "Rajesh Kumar", role: "Admin", websiteName: "Service Book", status: "Deactive" },
-        { id: 8, username: "Sneha Reddy", role: "superadmin", websiteName: "Aaple Sarkar/PG Portal", status: "Active" },
-        { id: 9, username: "Arun Mishra", role: "User", websiteName: "Property Tax", status: "Active" },
-        { id: 10, username: "Pooja Choudhary", role: "Admin", websiteName: "BPMS", status: "Deactive" },
-        { id: 11, username: "Karan Mehta", role: "superadmin", websiteName: "E-office", status: "Active" },
-        { id: 12, username: "Divya Joshi", role: "User", websiteName: "AttDuty", status: "Deactive" },
-        { id: 13, username: "Ravi Verma", role: "Admin", websiteName: "Biometric Attendance System", status: "Active" },
-        { id: 14, username: "Shreya Malhotra", role: "superadmin", websiteName: "Water Billing", status: "Active" },
-        { id: 15, username: "Sanjay Tiwari", role: "User", websiteName: "Legal Application", status: "Deactive" },
-        { id: 16, username: "Kavita Bhatia", role: "Admin", websiteName: "UMC Website", status: "Active" },
-        { id: 17, username: "Manoj Saxena", role: "superadmin", websiteName: "Divyang Kalyankari Yojna", status: "Active" },
-        { id: 18, username: "Anita Rao", role: "User", websiteName: "Town Planning – Permission", status: "Deactive" },
-        { id: 19, username: "Vivek Pandey", role: "Admin", websiteName: "Tree Census", status: "Active" },
-        { id: 20, username: "Swati Dubey", role: "superadmin", websiteName: "Property Tax Survey New", status: "Active" },
-        { id: 21, username: "Rohit Nair", role: "User", websiteName: "Nagrik Suvidha", status: "Deactive" },
-        { id: 22, username: "Preeti Iyer", role: "Admin", websiteName: "Election", status: "Active" },
-        { id: 23, username: "Deepak Menon", role: "superadmin", websiteName: "BCR", status: "Active" }
-    ];
+    // Fetch users from JSON server
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get(API_URL);
+            setUsers(response.data);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        }
+    };
+
+    // Filter users based on active tab
     const filteredUsers =
         activeTab === "all" ? users : users.filter((user) => user.role.toLowerCase() === activeTab);
 
+    // Handle edit button click
     const handleEditClick = (user) => {
         setSelectedUser(user);
         setEditedUser(user);
         setShowEditModal(true);
     };
 
+    // Handle input change in edit modal
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setEditedUser({ ...editedUser, [name]: value });
+    };
+
+    // Save edited user data
+    const handleSaveChanges = async () => {
+        if (!selectedUser || !selectedUser.id) {
+            console.error("No valid user selected for update.");
+            return;
+        }
+
+        try {
+            await axios.put(`${API_URL}/${selectedUser.id}`, editedUser);
+            fetchUsers(); // Refresh the user list
+            setShowEditModal(false);
+        } catch (error) {
+            console.error("Error updating user:", error);
+        }
+    };
+
+    // Handle delete user
+    const handleDelete = async () => {
+        if (!selectedUser || !selectedUser.id) {
+            console.error("No valid user selected for deletion.");
+            return;
+        }
+
+        try {
+            await axios.delete(`${API_URL}/${selectedUser.id}`);
+            fetchUsers(); // Refresh the user list
+            setShowDeleteModal(false);
+        } catch (error) {
+            console.error("Error deleting user:", error);
+        }
     };
 
     return (
@@ -72,6 +99,7 @@ const Users = () => {
                 </div>
             </div>
 
+            {/* Filter Tabs */}
             <ul className="nav nav-tabs">
                 {["all", "superadmin", "admin", "user"].map((tab) => (
                     <li className="nav-item" key={tab}>
@@ -85,6 +113,7 @@ const Users = () => {
                 ))}
             </ul>
 
+            {/* User Table */}
             <div className="table-responsive mt-3">
                 <table className="table table-bordered table-hover">
                     <thead className="thead-dark">
@@ -102,7 +131,7 @@ const Users = () => {
                             <tr key={user.id}>
                                 <td className="text-center">{index + 1}</td>
                                 <td>{user.username}</td>
-                                <td>{user.websiteName}</td>
+                                <td>{user.website}</td>
                                 <td className="text-center">{user.role === "superadmin" ? "SuperAdmin" : user.role}</td>
                                 <td className="text-center">
                                     <span
@@ -110,7 +139,7 @@ const Users = () => {
                                                 ? "bg-success bg-opacity-25 text-success"
                                                 : "bg-danger bg-opacity-25 text-danger"
                                             }`}
-                                            style={{fontSize:'14px'}}
+                                        style={{ fontSize: '14px' }}
                                     >
                                         {user.status}
                                     </span>
@@ -136,16 +165,17 @@ const Users = () => {
                 </table>
             </div>
 
+            {/* Edit Modal */}
             {showEditModal && selectedUser && (
                 <div className="modal fade show d-block" tabIndex="-1">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
-                            <div className="modal-header">
+                            <div className="modal-header  d-flex justify-content-between p-2"style={{ color: "#8A2BE2", backgroundColor: "rgba(138, 43, 226, 0.1)" }}>
                                 <h5 className="modal-title">Edit User</h5>
-                                <button className="close" onClick={() => setShowEditModal(false)}>&times;</button>
+                                <button className="close  bg-transparent border-0 p-0 fs-3" onClick={() => setShowEditModal(false)}>&times;</button>
                             </div>
                             <div className="modal-body">
-                                <label>UserName:</label>
+                                <label>Username:</label>
                                 <input type="text" className="form-control" name="username" value={editedUser.username} onChange={handleInputChange} />
 
                                 <label>Website Name:</label>
@@ -166,7 +196,28 @@ const Users = () => {
                             </div>
                             <div className="modal-footer">
                                 <button className="btn btn-secondary btn-sm" onClick={() => setShowEditModal(false)}>Close</button>
-                                <button className="btn btn-success btn-sm">Save Changes</button>
+                                <button className="btn btn-success btn-sm" onClick={handleSaveChanges}>Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="modal fade show d-block" tabIndex="-1">
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between p-2"style={{ color: "#8A2BE2", backgroundColor: "rgba(138, 43, 226, 0.1)" }}>
+                                <h5 className="modal-title">Delete User</h5>
+                                <button className="close  bg-transparent border-0 p-0 fs-3" onClick={() => setShowDeleteModal(false)}>&times;</button>
+                            </div>
+                            <div className="modal-body">
+                                <p>Are you sure you want to delete this user?</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button className="btn btn-secondary btn-sm" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                                <button className="btn btn-danger btn-sm" onClick={handleDelete}>Delete</button>
                             </div>
                         </div>
                     </div>

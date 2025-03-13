@@ -38,11 +38,11 @@ const Login = () => {
 
     if (validateForm()) {
       try {
-        const response = await fetch("/data.json"); // Fetch JSON from public folder
+        const response = await fetch("http://localhost:5000/users"); // Fetch JSON from public folder
         const data = await response.json();
 
         // Find user with matching email & password
-        const user = data.users.find((u) => u.email === email && u.password === password);
+        const user = data.find((u) => u.email === email && u.password === password);
 
         if (user) {
           Swal.fire({

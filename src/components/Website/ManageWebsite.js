@@ -6,7 +6,7 @@ import "../Users/Users.css";
 const API_URL = "http://localhost:5000/websites";
 
 const ManageWebsite = () => {
-    const [websites, setWebsites] = useState([]);  
+    const [websites, setWebsites] = useState([]);
     const [activeTab, setActiveTab] = useState("all");
     const [selectedWebsite, setSelectedWebsite] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -52,23 +52,28 @@ const ManageWebsite = () => {
             console.error("No valid website selected for update.");
             return;
         }
-    
+
         try {
             const response = await axios.put(`${API_URL}/${selectedWebsite.id}`, editedWebsite);
             console.log("Website updated successfully:", response.data);
-            fetchWebsites();
+            fetchWebsites(); // Refresh the list after update
             setShowEditModal(false);
         } catch (error) {
             console.error("Error updating website:", error.response?.data || error.message);
         }
     };
-    
 
     const handleDelete = async () => {
+        if (!selectedWebsite || !selectedWebsite.id) {
+            console.error("No valid website selected for deletion.");
+            return;
+        }
+
         try {
             await axios.delete(`${API_URL}/${selectedWebsite.id}`);
-            fetchWebsites();
-            setShowDeleteModal(false);
+            fetchWebsites(); // Refresh the list after delete
+            setShowDeleteModal(false); // Close the delete modal
+            setSelectedWebsite(null); // Clear the selected website
         } catch (error) {
             console.error("Error deleting website:", error);
         }
@@ -132,12 +137,12 @@ const ManageWebsite = () => {
                                 <td>{website.websiteName}</td>
                                 <td>{website.websiteURL}</td>
                                 <td className="text-center">
-                                    <img src={`/images/${website.websiteLogo}`} alt="Logo" width="40" />
+                                    <img src={website.websiteLogo} alt="Logo" width="40" />
                                 </td>
                                 <td className="text-center">
                                     <span className={`px-3 py-1 rounded-pill fw-semibold ${website.status === "active"
-                                            ? "bg-success bg-opacity-25 text-success"
-                                            : "bg-danger bg-opacity-25 text-danger"
+                                        ? "bg-success bg-opacity-25 text-success"
+                                        : "bg-danger bg-opacity-25 text-danger"
                                         }`} style={{ fontSize: '14px' }}>
                                         {website.status.charAt(0).toUpperCase() + website.status.slice(1)}
                                     </span>
@@ -168,26 +173,43 @@ const ManageWebsite = () => {
                 <div className="modal fade show d-block" tabIndex="-1">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Edit Website</h5>
-                                <button className="close" onClick={() => setShowEditModal(false)}>&times;</button>
+                            <div className="modal-header d-flex justify-content-between p-2"style={{ color: "#8A2BE2", backgroundColor: "rgba(138, 43, 226, 0.1)" }}
+ >
+                                <h5 className="modal-title"style={{ color: "#8A2BE2" }}
+                                >Edit Website</h5>
+                                <button
+                                    className="close bg-transparent border-0 p-0 fs-3"
+                                    onClick={() => setShowEditModal(false)}
+                                >
+                                    &times;
+                                </button>
                             </div>
+
                             <div className="modal-body">
-                                <label>Website Name:</label>
-                                <input type="text" className="form-control" name="websiteName" value={editedWebsite.websiteName} onChange={handleInputChange} />
+                                <div className="mb-3">
+                                    <label className="form-label">Website Name:</label>
+                                    <input type="text" className="form-control" name="websiteName" value={editedWebsite.websiteName} onChange={handleInputChange} />
+                                </div>
 
-                                <label>Website URL:</label>
-                                <input type="text" className="form-control" name="websiteURL" value={editedWebsite.websiteURL} onChange={handleInputChange} />
+                                <div className="mb-3">
+                                    <label className="form-label">Website URL:</label>
+                                    <input type="text" className="form-control" name="websiteURL" value={editedWebsite.websiteURL} onChange={handleInputChange} />
+                                </div>
 
-                                <label>Website Logo:</label>
-                                <input type="text" className="form-control" name="websiteLogo" value={editedWebsite.websiteLogo} onChange={handleInputChange} />
+                                <div className="mb-3">
+                                    <label className="form-label">Website Logo:</label>
+                                    <input type="text" className="form-control" name="websiteLogo" value={editedWebsite.websiteLogo} onChange={handleInputChange} />
+                                </div>
 
-                                <label>Status:</label>
-                                <select className="form-control" name="status" value={editedWebsite.status} onChange={handleInputChange}>
-                                    <option value="active">Active</option>
-                                    <option value="deactive">Deactive</option>
-                                </select>
+                                <div className="">
+                                    <label className="form-label">Status:</label>
+                                    <select className="form-control" name="status" value={editedWebsite.status} onChange={handleInputChange}>
+                                        <option value="active">Active</option>
+                                        <option value="deactive">Deactive</option>
+                                    </select>
+                                </div>
                             </div>
+
                             <div className="modal-footer">
                                 <button className="btn btn-secondary btn-sm" onClick={() => setShowEditModal(false)}>Close</button>
                                 <button className="btn btn-success btn-sm" onClick={handleSaveChanges}>Save Changes</button>
@@ -202,6 +224,13 @@ const ManageWebsite = () => {
                 <div className="modal fade show d-block" tabIndex="-1">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between p-2"style={{ color: "#8A2BE2", backgroundColor: "rgba(138, 43, 226, 0.1)" }}>
+                                <h5 className="modal-title">Delete Website</h5>
+                                <button className="close bg-transparent border-0 p-0 fs-3" onClick={() => setShowDeleteModal(false)}>&times;</button>
+                            </div>
+                            <div className="modal-body">
+                                <p>Are you sure you want to delete this website?</p>
+                            </div>
                             <div className="modal-footer">
                                 <button className="btn btn-secondary btn-sm" onClick={() => setShowDeleteModal(false)}>Cancel</button>
                                 <button className="btn btn-danger btn-sm" onClick={handleDelete}>Delete</button>
