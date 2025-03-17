@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
+import api, { baseURL } from "../api";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -38,8 +40,8 @@ const Login = () => {
 
     if (validateForm()) {
       try {
-        const response = await fetch("https://globalwebsite.genicminds.com/api/users"); 
-        const data = await response.json();
+        const response = await api.get('/users'); 
+        const data = response.data;
 
         // Find user with matching email & password
         const user = data.find((u) => u.email === email && u.password === password);

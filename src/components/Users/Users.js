@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer and toast
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast notifications
 import "./Users.css";
+import api, { baseURL } from "../api";
 
-const API_URL = "https://globalwebsite.genicminds.com/api/users";
+
+// const API_URL = "https://globalwebsite.genicminds.com/api/users";
 
 const Users = () => {
     const [activeTab, setActiveTab] = useState("all");
@@ -24,7 +25,7 @@ const Users = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get(API_URL);
+            const response = await api.get('/users');
             setUsers(response.data);
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -60,7 +61,7 @@ const Users = () => {
         }
 
         try {
-            await axios.put(`${API_URL}/${selectedUser.id}`, editedUser);
+            await api.put(`${'/users'}/${selectedUser.id}`, editedUser);
             fetchUsers();
             setShowEditModal(false);
 
@@ -96,7 +97,7 @@ const Users = () => {
         }
 
         try {
-            await axios.delete(`${API_URL}/${selectedUser.id}`);
+            await api.delete(`${'users'}/${selectedUser.id}`);
             fetchUsers();
             setShowDeleteModal(false);
 
