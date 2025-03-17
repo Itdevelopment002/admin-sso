@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Dashboard.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api, {baseURL} from "../api";
 
-const API_URL = "https://globalwebsite.genicminds.com/api/websites"; // Replace with your actual API endpoint
 
 const Dashboard = () => {
     const [userRole, setUserRole] = useState(null);
@@ -20,7 +19,7 @@ const Dashboard = () => {
 
     const fetchCardData = async () => {
         try {
-            const response = await axios.get(API_URL);
+            const response = await api.get('/websites');
             setCardData(response.data);
         } catch (error) {
             console.error("Error fetching dashboard data:", error);

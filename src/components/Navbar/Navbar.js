@@ -4,6 +4,7 @@ import { FaSearch, FaUser, FaEdit, FaSignOutAlt, FaEllipsisV } from "react-icons
 import { RiArrowDropDownLine } from "react-icons/ri";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import api, {baseURL} from "../api";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -17,10 +18,9 @@ const Navbar = () => {
     const storedRole = localStorage.getItem("userRole");
 
     if (storedRole) {
-      fetch("https://globalwebsite.genicminds.com/api/users")
-        .then((response) => response.json())
-        .then((data) => {
-          const loggedInUser = data.find((user) => user.role === storedRole);
+      api.get("/users")
+        .then((response) => {
+          const loggedInUser = response.data.find((user) => user.role === storedRole);
           if (loggedInUser) {
             setUsername(loggedInUser.username);
             setRole(loggedInUser.role);

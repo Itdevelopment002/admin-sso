@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import "./AddWebsite.css"
+import "./AddWebsite.css";
+import api, { baseURL } from "../api";
+
 
 const AddWebsite = () => {
     const navigate = useNavigate();
@@ -66,7 +67,7 @@ const AddWebsite = () => {
             };
 
             try {
-                await axios.post('http://localhost:5010/websites', newWebsite);
+                await api.post('/websites', newWebsite);
                 toast.success('Website added successfully!', { position: "top-right", autoClose: 3000 });
 
                 setFormData({ websiteName: '', websiteLogo: null, dashboardURL: '', status: 'active' });

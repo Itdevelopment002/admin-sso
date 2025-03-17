@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./AddUsers.css";
+import api, {baseURL} from "../api";
 
-// const API_URL = "http://localhost:5010/users";
-const API_URL = "https://globalwebsite.genicminds.com/api/users";
+
 
 const AddUsers = () => {
     const navigate = useNavigate();
@@ -101,7 +100,7 @@ const AddUsers = () => {
         }
 
         try {
-            const response = await axios.post(API_URL, formData);
+            const response = await api.post("/users", formData);
             console.log("User added successfully:", response.data);
             toast.success("User added successfully!", {
                 position: "top-right",

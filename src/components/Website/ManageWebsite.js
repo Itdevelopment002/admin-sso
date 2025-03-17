@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../Users/Users.css";
+import api, { baseURL } from "../api";
 
-const API_URL = "https://globalwebsite.genicminds.com/api/websites";
+// const API_URL = "https://globalwebsite.genicminds.com/api/websites";
 
 const ManageWebsite = () => {
     const [websites, setWebsites] = useState([]);
@@ -26,7 +26,7 @@ const ManageWebsite = () => {
 
     const fetchWebsites = async () => {
         try {
-            const response = await axios.get(API_URL);
+            const response = await api.get('/websites');
             setWebsites(response.data);
         } catch (error) {
             console.error("Error fetching websites:", error);
@@ -65,7 +65,7 @@ const ManageWebsite = () => {
         }
 
         try {
-            await axios.put(`${API_URL}/${selectedWebsite.id}`, editedWebsite);
+            await api.put(`${'/websites'}/${selectedWebsite.id}`, editedWebsite);
             toast.success("Website updated successfully!", { position: "top-right" });
             fetchWebsites();
             setShowEditModal(false);
@@ -82,7 +82,7 @@ const ManageWebsite = () => {
         }
 
         try {
-            await axios.delete(`${API_URL}/${selectedWebsite.id}`);
+            await api.delete(`${'/websites'}/${selectedWebsite.id}`);
             toast.success("Website deleted successfully!", { position: "top-right" });
             fetchWebsites();
             setShowDeleteModal(false);
