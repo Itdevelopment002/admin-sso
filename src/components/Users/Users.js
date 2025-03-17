@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast notifications
 import "./Users.css";
 
-const API_URL = "http://localhost:5000/users";
+const API_URL = "https://globalwebsite.genicminds.com/api/users";
 
 const Users = () => {
     const [activeTab, setActiveTab] = useState("all");

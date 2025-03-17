@@ -5,7 +5,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./AddUsers.css";
 
-const API_URL = "http://localhost:5000/users";
+// const API_URL = "http://localhost:5010/users";
+const API_URL = "https://globalwebsite.genicminds.com/api/users";
 
 const AddUsers = () => {
     const navigate = useNavigate();

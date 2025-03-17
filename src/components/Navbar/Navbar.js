@@ -17,7 +17,7 @@ const Navbar = () => {
     const storedRole = localStorage.getItem("userRole");
 
     if (storedRole) {
-      fetch("http://localhost:5000/users")
+      fetch("https://globalwebsite.genicminds.com/api/users")
         .then((response) => response.json())
         .then((data) => {
           const loggedInUser = data.find((user) => user.role === storedRole);

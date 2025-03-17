@@ -4,7 +4,7 @@ import "./Dashboard.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/websites"; // Replace with your actual API endpoint
+const API_URL = "https://globalwebsite.genicminds.com/api/websites"; // Replace with your actual API endpoint
 
 const Dashboard = () => {
     const [userRole, setUserRole] = useState(null);

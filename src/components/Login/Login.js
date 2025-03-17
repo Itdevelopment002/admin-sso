@@ -38,7 +38,7 @@ const Login = () => {
 
     if (validateForm()) {
       try {
-        const response = await fetch("http://localhost:5000/users"); // Fetch JSON from public folder
+        const response = await fetch("https://globalwebsite.genicminds.com/api/users"); 
         const data = await response.json();
 
         // Find user with matching email & password
