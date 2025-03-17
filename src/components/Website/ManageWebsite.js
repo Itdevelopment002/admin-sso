@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../Users/Users.css";
 
 const API_URL = "http://localhost:5000/websites";
@@ -13,12 +15,11 @@ const ManageWebsite = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [editedWebsite, setEditedWebsite] = useState({
         websiteName: "",
-        websiteURL: "",
+        dashboardURL: "",
         websiteLogo: "",
-        status: "active"
+        status: "active",
     });
 
-    // 🔹 Fetch Data from JSON Server on Component Mount
     useEffect(() => {
         fetchWebsites();
     }, []);
@@ -29,12 +30,11 @@ const ManageWebsite = () => {
             setWebsites(response.data);
         } catch (error) {
             console.error("Error fetching websites:", error);
+            toast.error("Failed to fetch websites!", { position: "top-right" });
         }
     };
 
-    const filteredWebsites = activeTab === "all"
-        ? websites
-        : websites.filter((site) => site.status.toLowerCase() === activeTab);
+    const filteredWebsites = activeTab === "all" ? websites : websites.filter((site) => site.status.toLowerCase() === activeTab);
 
     const handleEditClick = (website) => {
         setSelectedWebsite(website);
@@ -47,63 +47,74 @@ const ManageWebsite = () => {
         setEditedWebsite({ ...editedWebsite, [name]: value });
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setEditedWebsite({ ...editedWebsite, websiteLogo: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSaveChanges = async () => {
         if (!selectedWebsite || !selectedWebsite.id) {
-            console.error("No valid website selected for update.");
+            toast.error("No website selected for update!", { position: "top-right" });
             return;
         }
 
         try {
-            const response = await axios.put(`${API_URL}/${selectedWebsite.id}`, editedWebsite);
-            console.log("Website updated successfully:", response.data);
-            fetchWebsites(); // Refresh the list after update
+            await axios.put(`${API_URL}/${selectedWebsite.id}`, editedWebsite);
+            toast.success("Website updated successfully!", { position: "top-right" });
+            fetchWebsites();
             setShowEditModal(false);
         } catch (error) {
             console.error("Error updating website:", error.response?.data || error.message);
+            toast.error("Failed to update website!", { position: "top-right" });
         }
     };
 
     const handleDelete = async () => {
         if (!selectedWebsite || !selectedWebsite.id) {
-            console.error("No valid website selected for deletion.");
+            toast.error("No website selected for deletion!", { position: "top-right" });
             return;
         }
 
         try {
             await axios.delete(`${API_URL}/${selectedWebsite.id}`);
-            fetchWebsites(); // Refresh the list after delete
-            setShowDeleteModal(false); // Close the delete modal
-            setSelectedWebsite(null); // Clear the selected website
+            toast.success("Website deleted successfully!", { position: "top-right" });
+            fetchWebsites();
+            setShowDeleteModal(false);
+            setSelectedWebsite(null);
         } catch (error) {
             console.error("Error deleting website:", error);
+            toast.error("Failed to delete website!", { position: "top-right" });
         }
     };
 
     return (
         <div className="container-fluid mt-5 color-bg" id="users">
+            <ToastContainer />
+
             <nav className="breadcrumb">
-                <Link to="/dashboard" className="breadcrumb-item text-decoration-none">
-                    Home
-                </Link>
+                <Link to="/dashboard" className="breadcrumb-item text-decoration-none">Home</Link>
                 <span className="breadcrumb-item active1">Website Management</span>
             </nav>
 
             <div className="row align-items-center">
                 <div className="col-12 col-md-6 col-sm-7">
                     <h2 className="location-title">
-                        <span className="highlight">Website</span>
-                        <span className="highlighted-text"> Management</span>
+                        <span className="highlight">Website</span> <span className="highlighted-text">Management</span>
                     </h2>
                 </div>
-                <div className="col-12 col-md-6 col-sm-5 text-end mt-md-0 userbuttom-margin">
+                <div className="col-12 col-md-6 col-sm-5 text-end">
                     <Link to="/add-website" className="btn btn-users">
-                        <i className="fa fa-plus me-2"></i>
-                        Add Website
+                        <i className="fa fa-plus me-2"></i> Add Website
                     </Link>
                 </div>
             </div>
 
-            {/* 🔹 Filter Tabs */}
             <ul className="nav nav-tabs">
                 {["all", "active", "deactive"].map((tab) => (
                     <li className="nav-item" key={tab}>
@@ -117,17 +128,16 @@ const ManageWebsite = () => {
                 ))}
             </ul>
 
-            {/* 🔹 Website Table */}
             <div className="table-responsive mt-3">
                 <table className="table table-bordered table-hover">
                     <thead className="thead-dark">
                         <tr>
-                            <th width='6%'>Sr. No.</th>
+                            <th width="6%">Sr. No.</th>
                             <th>Website Name</th>
                             <th>Dashboard URL</th>
                             <th className="text-center">Website Logo</th>
                             <th className="text-center">Status</th>
-                            <th width='10%' className="text-center">Actions</th>
+                            <th width="10%" className="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -135,30 +145,20 @@ const ManageWebsite = () => {
                             <tr key={website.id}>
                                 <td className="text-center">{index + 1}</td>
                                 <td>{website.websiteName}</td>
-                                <td>{website.websiteURL}</td>
+                                <td>{website.dashboardURL}</td>
                                 <td className="text-center">
                                     <img src={website.websiteLogo} alt="Logo" width="40" />
                                 </td>
                                 <td className="text-center">
-                                    <span className={`px-3 py-1 rounded-pill fw-semibold ${website.status === "active"
-                                        ? "bg-success bg-opacity-25 text-success"
-                                        : "bg-danger bg-opacity-25 text-danger"
-                                        }`} style={{ fontSize: '14px' }}>
+                                    <span className={`px-3 py-1 rounded-pill fw-semibold ${website.status === "active" ? "bg-success bg-opacity-25 text-success" : "bg-danger bg-opacity-25 text-danger"}`} style={{ fontSize: "14px" }}>
                                         {website.status.charAt(0).toUpperCase() + website.status.slice(1)}
                                     </span>
                                 </td>
-
                                 <td className="text-center">
-                                    <button
-                                        className="btn btn-sm btn-purple mx-1 mt-1"
-                                        onClick={() => handleEditClick(website)}
-                                    >
+                                    <button className="btn btn-sm btn-purple mx-1 mt-1" onClick={() => handleEditClick(website)}>
                                         <i className="fas fa-edit"></i>
                                     </button>
-                                    <button
-                                        className="btn btn-sm btn-danger-custom mx-1 mt-1"
-                                        onClick={() => { setSelectedWebsite(website); setShowDeleteModal(true); }}
-                                    >
+                                    <button className="btn btn-sm btn-danger mx-1 mt-1" onClick={() => { setSelectedWebsite(website); setShowDeleteModal(true); }}>
                                         <i className="fas fa-trash"></i>
                                     </button>
                                 </td>
@@ -168,14 +168,14 @@ const ManageWebsite = () => {
                 </table>
             </div>
 
-            {/* 🔹 Edit Modal */}
-            {showEditModal && selectedWebsite && (
+            {/* Edit Modal */}
+            {showEditModal && (
                 <div className="modal fade show d-block" tabIndex="-1">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
-                            <div className="modal-header d-flex justify-content-between p-2"style={{ color: "#8A2BE2", backgroundColor: "rgba(138, 43, 226, 0.1)" }}
- >
-                                <h5 className="modal-title"style={{ color: "#8A2BE2" }}
+                            <div className="modal-header d-flex justify-content-between" style={{ color: "#8A2BE2", backgroundColor: "rgba(138, 43, 226, 0.1)" }}
+                            >
+                                <h5 className="modal-title" style={{ color: "#8A2BE2" }}
                                 >Edit Website</h5>
                                 <button
                                     className="close bg-transparent border-0 p-0 fs-3"
@@ -184,21 +184,23 @@ const ManageWebsite = () => {
                                     &times;
                                 </button>
                             </div>
-
                             <div className="modal-body">
                                 <div className="mb-3">
                                     <label className="form-label">Website Name:</label>
                                     <input type="text" className="form-control" name="websiteName" value={editedWebsite.websiteName} onChange={handleInputChange} />
                                 </div>
-
                                 <div className="mb-3">
                                     <label className="form-label">Website URL:</label>
-                                    <input type="text" className="form-control" name="websiteURL" value={editedWebsite.websiteURL} onChange={handleInputChange} />
+                                    <input type="text" className="form-control" name="dashboardURL" value={editedWebsite.dashboardURL} onChange={handleInputChange} />
                                 </div>
-
                                 <div className="mb-3">
-                                    <label className="form-label">Website Logo:</label>
-                                    <input type="text" className="form-control" name="websiteLogo" value={editedWebsite.websiteLogo} onChange={handleInputChange} />
+                                    <label className="form-label me-2">Website Logo:</label>
+                                    <div className="d-flex align-items-center">
+                                        <input type="file" className="form-control w-70 me-4" onChange={handleImageChange} />
+                                        {editedWebsite.websiteLogo && (
+                                            <img src={editedWebsite.websiteLogo} alt="Preview" width="50" height="50" className="border rounded" />
+                                        )}
+                                    </div>
                                 </div>
 
                                 <div className="">
@@ -208,23 +210,20 @@ const ManageWebsite = () => {
                                         <option value="deactive">Deactive</option>
                                     </select>
                                 </div>
-                            </div>
-
-                            <div className="modal-footer">
-                                <button className="btn btn-secondary btn-sm" onClick={() => setShowEditModal(false)}>Close</button>
-                                <button className="btn btn-success btn-sm" onClick={handleSaveChanges}>Save Changes</button>
+                                <div className="modal-footer">
+                                    <button className="btn btn-secondary btn-sm" onClick={() => setShowEditModal(false)}>Close</button>
+                                    <button className="btn btn-success btn-sm" onClick={handleSaveChanges}>Save Changes</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
-
-            {/* 🔹 Delete Confirmation Modal */}
             {showDeleteModal && (
                 <div className="modal fade show d-block" tabIndex="-1">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
-                            <div className="modal-header d-flex justify-content-between p-2"style={{ color: "#8A2BE2", backgroundColor: "rgba(138, 43, 226, 0.1)" }}>
+                            <div className="modal-header d-flex justify-content-between p-2" style={{ color: "#8A2BE2", backgroundColor: "rgba(138, 43, 226, 0.1)" }}>
                                 <h5 className="modal-title">Delete Website</h5>
                                 <button className="close bg-transparent border-0 p-0 fs-3" onClick={() => setShowDeleteModal(false)}>&times;</button>
                             </div>

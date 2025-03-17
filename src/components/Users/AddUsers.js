@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./AddUsers.css";
 
-const API_URL = "http://localhost:5000/users"; // JSON Server endpoint
+const API_URL = "http://localhost:5000/users";
 
 const AddUsers = () => {
     const navigate = useNavigate();
@@ -13,6 +15,15 @@ const AddUsers = () => {
         password: "",
         website: [],
         status: "active",
+        role: "",
+        mobileNo: "",
+    });
+
+    const [errors, setErrors] = useState({
+        username: "",
+        email: "",
+        password: "",
+        website: "",
         role: "",
         mobileNo: "",
     });
@@ -37,13 +48,13 @@ const AddUsers = () => {
         { value: "User", label: "User" },
     ];
 
-    // Handle role selection
     const handleRoleSelect = (role) => {
         setFormData({ ...formData, role });
+        setErrors({ ...errors, role: "" });
         setRoleDropdownOpen(false);
     };
 
-    // Handle checkbox selection
+
     const handleCheckboxChange = (event) => {
         const { value, checked } = event.target;
         setFormData((prevState) => {
@@ -52,9 +63,9 @@ const AddUsers = () => {
                 : prevState.website.filter((site) => site !== value);
             return { ...prevState, website: updatedWebsites };
         });
+        setErrors({ ...errors, website: "" });
     };
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -71,24 +82,60 @@ const AddUsers = () => {
         };
     }, []);
 
-    // Handle form submission (Add User)
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const newErrors = {};
+        if (!formData.username) newErrors.username = "Username is required";
+        if (!formData.email) newErrors.email = "Email is required";
+        if (!formData.password) newErrors.password = "Password is required";
+        if (!formData.mobileNo) newErrors.mobileNo = "Mobile Number is required";
+        if (formData.website.length === 0) newErrors.website = "At least one website must be selected";
+        if (!formData.role) newErrors.role = "Role is required";
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
         try {
-            // Send a POST request to add a new user
             const response = await axios.post(API_URL, formData);
             console.log("User added successfully:", response.data);
-
-            // Redirect to the user list page after successful submission
-            navigate("/users");
+            toast.success("User added successfully!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            setTimeout(() => {
+                navigate("/users");
+            }, 1000); 
         } catch (error) {
             console.error("Error adding user:", error.response?.data || error.message);
+            toast.error("Failed to add user. Please try again.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        setErrors({ ...errors, [name]: "" });
     };
 
     return (
         <div className="container-fluid mt-5 color-bg" id="users">
+            <ToastContainer />
+
             <nav className="breadcrumb">
                 <Link to="/dashboard" className="breadcrumb-item text-decoration-none">Home</Link>
                 <Link to="/users" className="breadcrumb-item text-decoration-none">User Management</Link>
@@ -108,22 +155,26 @@ const AddUsers = () => {
                     <div className="row g-4 mt-1">
                         <div className="col-md-6">
                             <label htmlFor="username" className="form-label fw-semibold">Username</label>
-                            <input type="text" className="form-control" placeholder="Enter your name" id="username" name="username" value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} required />
+                            <input type="text" className="form-control" placeholder="Enter your name" id="username" name="username" value={formData.username} onChange={handleInputChange} required />
+                            {errors.username && <div className="text-danger">{errors.username}</div>}
                         </div>
                         <div className="col-md-6">
                             <label htmlFor="email" className="form-label fw-bold">Email</label>
-                            <input type="email" className="form-control" placeholder="Enter your email" id="email" name="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+                            <input type="email" className="form-control" placeholder="Enter your email" id="email" name="email" value={formData.email} onChange={handleInputChange} required />
+                            {errors.email && <div className="text-danger">{errors.email}</div>}
                         </div>
                     </div>
 
                     <div className="row g-4 mt-1">
                         <div className="col-md-6">
                             <label htmlFor="password" className="form-label fw-bold">Password</label>
-                            <input type="password" className="form-control" placeholder="Enter your password" id="password" name="password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required />
+                            <input type="password" className="form-control" placeholder="Enter your password" id="password" name="password" value={formData.password} onChange={handleInputChange} required />
+                            {errors.password && <div className="text-danger">{errors.password}</div>}
                         </div>
                         <div className="col-md-6">
                             <label htmlFor="mobileNo" className="form-label fw-bold">Mobile Number</label>
-                            <input type="tel" className="form-control" placeholder="Enter your mobile number" id="mobileNo" name="mobileNo" value={formData.mobileNo} onChange={(e) => setFormData({ ...formData, mobileNo: e.target.value })} required />
+                            <input type="tel" className="form-control" placeholder="Enter your mobile number" id="mobileNo" name="mobileNo" value={formData.mobileNo} onChange={handleInputChange} required />
+                            {errors.mobileNo && <div className="text-danger">{errors.mobileNo}</div>}
                         </div>
                     </div>
 
@@ -159,6 +210,7 @@ const AddUsers = () => {
                                     </ul>
                                 )}
                             </div>
+                            {errors.website && <div className="text-danger">{errors.website}</div>}
                         </div>
 
                         {/* Custom Multi-Select Dropdown with Checkboxes */}
@@ -185,6 +237,7 @@ const AddUsers = () => {
                                     </ul>
                                 )}
                             </div>
+                            {errors.role && <div className="text-danger">{errors.role}</div>}
                         </div>
 
                         <div className="col-lg-3 col-md-12">
